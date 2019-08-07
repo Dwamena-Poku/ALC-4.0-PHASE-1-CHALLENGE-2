@@ -2,4 +2,7 @@
     <string name="app_name">Travelmantics</string>
     <string name="save_menu">save</string>
     <string name="delete_deal">Delete deal</string>
+    <string name="title_hint">Title</string>
+    <string name="price_hint">Price (numbers only)</string>
+    <string name="description_hint">Description</string>
 </resources>

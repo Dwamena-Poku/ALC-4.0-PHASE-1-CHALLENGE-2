@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -26,12 +28,13 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private FirebaseDatabase myFirebaseDatabase;
     private DatabaseReference myDatabaseReference;
     private ChildEventListener myChildListener;
+    private ImageView imageDeal;
 
     public DealAdapter(){
-        FirebaseUtil.openFbReference("traveldeals");
+        //FirebaseUtil.openFbReference("traveldeals");
         myFirebaseDatabase = FirebaseUtil.myFirebaseDatabase;
         myDatabaseReference = FirebaseUtil.myDatabaseReference;
-        deals = FirebaseUtil.myDeals;
+        this.deals = FirebaseUtil.myDeals;
         myChildListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -98,6 +101,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             tvTitle = (TextView) itemView.findViewById(R.id.textView_tvTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.textView_tvDescription);
             tvPrice = (TextView) itemView.findViewById(R.id.textView_tvPrice);
+            imageDeal = (ImageView) itemView.findViewById(R.id.imageView_imageDeal);
             itemView.setOnClickListener(this);
         }
 
@@ -105,6 +109,17 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             tvTitle.setText(deal.getTitle());
             tvDescription.setText(deal.getDescription());
             tvPrice.setText(deal.getPrice());
+            showImage(deal.getImageUrl());
+        }
+
+        private void showImage(String imageUrl) {
+            if(imageUrl != null && imageUrl.isEmpty()==false){
+                Picasso.get()
+                        .load(imageUrl)
+                        .resize(160, 160)
+                        .centerCrop()
+                        .into(imageDeal);
+            }
         }
 
         @Override
